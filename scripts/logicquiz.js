@@ -144,6 +144,11 @@ function showSuccessMessage() {
 document.getElementById('quiz-reset').addEventListener('click', function(event) {
   event.preventDefault();  // Evitar el comportamiento por defecto del link
 
+  // Mostrar el formulario nuevamente
+  const formElement = document.getElementById('eligibility-quiz');
+  formElement.style.display = 'block';
+  formElement.style.opacity = 1;
+
   // Reiniciar todos los pasos
   document.querySelectorAll('.quiz-form-step').forEach(step => {
     step.style.display = 'none';  // Ocultar todos los pasos
@@ -172,4 +177,3 @@ document.getElementById('quiz-reset').addEventListener('click', function(event) 
   // Lógica para reiniciar el formulario
   updateProgressBar(0);  // Volver a actualizar la barra de progreso al step 0
 });
-
