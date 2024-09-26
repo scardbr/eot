@@ -140,40 +140,7 @@ function showSuccessMessage() {
   }, 500);  // Esperar a que la opacidad llegue a 0 antes de ocultar el formulario
 }
 
-// Manejador para el botón de reset en el formulario
-document.getElementById('quiz-reset').addEventListener('click', function(event) {
-  event.preventDefault();  // Evitar el comportamiento por defecto del link
-
-  // Mostrar el formulario nuevamente
-  const formElement = document.getElementById('eligibility-quiz');
-  formElement.style.display = 'block';
-  formElement.style.opacity = 1;
-
-  // Reiniciar todos los pasos
-  document.querySelectorAll('.quiz-form-step').forEach(step => {
-    step.style.display = 'none';  // Ocultar todos los pasos
-    step.style.opacity = 0;       // Restablecer la opacidad
-  });
-
-  // Volver al primer paso (step 0)
-  const firstStep = document.querySelector('.quiz-form-step[data-step="0"]');
-  firstStep.style.display = 'flex';  // Mostrar el step 0
-  firstStep.style.opacity = 1;       // Restablecer la opacidad
-
-  // Ocultar la pantalla de éxito
-  const successScreen = document.querySelector('.quiz-form-success.w-form-done');
-  successScreen.style.display = 'none';
-  successScreen.style.opacity = 0;
-
-  // Reiniciar la barra de progreso
-  const progressBar = document.querySelector('.progress-bar-indicator');
-  progressBar.style.width = '0%';  // Reiniciar la barra de progreso al 0%
-  
-  // Reiniciar otros elementos de radio y lógica si es necesario
-  document.querySelectorAll('input[type="radio"]').forEach(radio => {
-    radio.checked = false;  // Desmarcar todas las opciones de radio
-  });
-
-  // Lógica para reiniciar el formulario
-  updateProgressBar(0);  // Volver a actualizar la barra de progreso al step 0
+document.getElementById('reset-quiz').addEventListener('click', function(event) {
+  event.preventDefault();  // Prevent the default behavior
+  location.reload();  // Reload the page
 });
