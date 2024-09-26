@@ -93,6 +93,7 @@ function transitionToNextStep(currentStepNumber, nextStepNumber) {
   currentStep.style.transition = 'opacity 0.5s ease';  // Agregar la transición de opacidad
   currentStep.style.opacity = 0;
 
+  // Después de la transición, cambiar el display a 'none'
   setTimeout(function() {
     currentStep.style.display = 'none';  // Ocultar el step actual después de la transición
     nextStep.style.display = 'flex';     // Mostrar el siguiente paso
@@ -130,6 +131,7 @@ function showSuccessMessage(currentStep) {
   currentStepElement.style.transition = 'opacity 0.5s ease';
   currentStepElement.style.opacity = 0;
 
+  // Después de la transición, ocultar el step actual y mostrar la pantalla de éxito
   setTimeout(() => {
     currentStepElement.style.display = 'none';  // Ocultar el step después de la transición
     successScreen.style.display = 'block';  // Mostrar la pantalla de éxito
