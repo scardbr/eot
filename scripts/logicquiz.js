@@ -172,4 +172,3 @@ document.getElementById('quiz-reset').addEventListener('click', function(event) 
   // Lógica para reiniciar el formulario
   updateProgressBar(0);  // Volver a actualizar la barra de progreso al step 0
 });
-
