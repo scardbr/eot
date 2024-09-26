@@ -31,17 +31,17 @@ document.querySelectorAll('.btn-wrapper, .quiz-form-list-wrapper').forEach((wrap
     // Step 1: Si se marca "Yes", se hace submit con data-filter "refused"
     if (currentStep === 1 && selectedValue === 'Yes') {
       showFilter('refused');
-      showSuccessMessage(); // Mostrar la pantalla de éxito sin enviar el formulario
+      showSuccessMessage(currentStep); // Mostrar la pantalla de éxito sin enviar el formulario
     }
     // Step 2: Si se marca "No", se hace submit con data-filter "refused"
     else if (currentStep === 2 && selectedValue === 'No') {
       showFilter('refused');
-      showSuccessMessage(); // Mostrar la pantalla de éxito sin enviar el formulario
+      showSuccessMessage(currentStep); // Mostrar la pantalla de éxito sin enviar el formulario
     }
     // Step 3: Si se marca "No", se hace submit con data-filter "refused"
     else if (currentStep === 3 && selectedValue === 'No') {
       showFilter('refused');
-      showSuccessMessage(); // Mostrar la pantalla de éxito sin enviar el formulario
+      showSuccessMessage(currentStep); // Mostrar la pantalla de éxito sin enviar el formulario
     }
     // Step 4: Manejar los tres valores del step 4
     else if (currentStep === 4) {
@@ -50,10 +50,10 @@ document.querySelectorAll('.btn-wrapper, .quiz-form-list-wrapper').forEach((wrap
         updateProgressBar(currentStep + 1);  // Actualizar barra de progreso
       } else if (selectedValue === 'Holding Company or Personal Trust') {
         showFilter('regular');  // Mostrar el filtro regular
-        showSuccessMessage(); // Mostrar la pantalla de éxito sin enviar el formulario
+        showSuccessMessage(currentStep); // Mostrar la pantalla de éxito sin enviar el formulario
       } else if (selectedValue === 'Another Company') {
         showFilter('refused');  // Mostrar el filtro refused
-        showSuccessMessage(); // Mostrar la pantalla de éxito sin enviar el formulario
+        showSuccessMessage(currentStep); // Mostrar la pantalla de éxito sin enviar el formulario
       }
     }
     // Step 5: Si se marca "Yes", avanzar al siguiente paso, si se marca "No", submit con filtro "refused"
@@ -63,17 +63,17 @@ document.querySelectorAll('.btn-wrapper, .quiz-form-list-wrapper').forEach((wrap
         updateProgressBar(currentStep + 1);  // Actualizar barra de progreso
       } else if (selectedValue === 'No') {
         showFilter('refused');  // Mostrar el filtro "refused"
-        showSuccessMessage(); // Mostrar la pantalla de éxito sin enviar el formulario
+        showSuccessMessage(currentStep); // Mostrar la pantalla de éxito sin enviar el formulario
       }
     }
     // Última pregunta: "Yes" muestra el filtro "good", "No" muestra el filtro "refused"
     else if (currentStep === 6) {
       if (selectedValue === 'Yes') {
         showFilter('good');  // Mostrar el filtro "good"
-        showSuccessMessage(); // Mostrar la pantalla de éxito sin enviar el formulario
+        showSuccessMessage(currentStep); // Mostrar la pantalla de éxito sin enviar el formulario
       } else if (selectedValue === 'No') {
         showFilter('refused');  // Mostrar el filtro "refused"
-        showSuccessMessage(); // Mostrar la pantalla de éxito sin enviar el formulario
+        showSuccessMessage(currentStep); // Mostrar la pantalla de éxito sin enviar el formulario
       }
     }
     // En otros casos, avanzar al siguiente step
@@ -89,7 +89,8 @@ function transitionToNextStep(currentStepNumber, nextStepNumber) {
   const currentStep = document.querySelector(`.quiz-form-step[data-step="${currentStepNumber}"]`);
   const nextStep = document.querySelector(`.quiz-form-step[data-step="${nextStepNumber}"]`);
   
-  // Desvanecer el paso actual
+  // Desvanecer el paso actual con una transición de opacidad
+  currentStep.style.transition = 'opacity 0.5s ease';  // Agregar la transición de opacidad
   currentStep.style.opacity = 0;
 
   setTimeout(function() {
@@ -108,23 +109,35 @@ function showFilter(filterType) {
   // Ocultar todos los mensajes de éxito
   document.querySelectorAll('.quiz-form-success-option').forEach((element) => {
     element.style.display = 'none';
+    element.classList.remove('flex');  // Asegurarse de que el flex sea removido de los otros filtros
   });
 
   // Mostrar solo el filtro correspondiente
   const filterElement = document.querySelector(`.quiz-form-success-option[data-filter="${filterType}"]`);
   if (filterElement) {
-    filterElement.style.display = 'block';
+    filterElement.style.display = 'flex';  // Agregar flex
+    filterElement.style.justifyContent = 'center';
+    filterElement.style.alignItems = 'center';
   }
 }
 
 // Función para mostrar la pantalla de éxito
-function showSuccessMessage() {
+function showSuccessMessage(currentStep) {
   const successScreen = document.querySelector('.quiz-form-success.w-form-done');
-  successScreen.style.display = 'block';
-  successScreen.style.opacity = 0;
-  
+  const currentStepElement = document.querySelector(`.quiz-form-step[data-step="${currentStep}"]`);
+
+  // Desvanecer el step actual con una transición de opacidad
+  currentStepElement.style.transition = 'opacity 0.5s ease';
+  currentStepElement.style.opacity = 0;
+
   setTimeout(() => {
-    successScreen.style.opacity = 1;  // Mostrar el div de éxito con una transición suave
-    successScreen.style.transition = 'opacity 0.5s ease';
-  }, 50);
+    currentStepElement.style.display = 'none';  // Ocultar el step después de la transición
+    successScreen.style.display = 'block';  // Mostrar la pantalla de éxito
+    successScreen.style.opacity = 0;
+
+    setTimeout(() => {
+      successScreen.style.opacity = 1;  // Mostrar el div de éxito con una transición suave
+      successScreen.style.transition = 'opacity 0.5s ease';
+    }, 50);
+  }, 500);  // Esperar a que la opacidad llegue a 0 antes de ocultar el step actual
 }
